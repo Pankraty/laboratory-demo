@@ -68,12 +68,14 @@ namespace Mice
 
             public void GetMedicine(IMedicine drop)
             {
-                _makeMedicineWork = Task.Run(async () => 
-                {
-                    await Task.Delay(MedicineTimeToWork);
-                    if (drop is Medicine medicine && medicine.IsPoisoned)
-                        _isAlive = false;
-                });
+                if (_makeMedicineWork == null)
+                    _makeMedicineWork = Task.Run(async () => 
+                    {
+                        await Task.Delay(MedicineTimeToWork);
+                    });
+
+                if (drop is Medicine medicine && medicine.IsPoisoned)
+                    _isAlive = false;
             }
         }
 

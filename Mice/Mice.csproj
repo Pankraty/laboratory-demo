@@ -48,6 +48,8 @@
     <Compile Include="Laboratory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestingSession.cs" />
+    <Compile Include="TestingSessionSet.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
