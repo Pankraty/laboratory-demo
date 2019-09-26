@@ -20,7 +20,10 @@ namespace Mice
             _rnd = seed.HasValue
                 ? new Random(seed.Value)
                 : new Random();
+            NumberOfLaborants = 2;
         }
+
+        public int NumberOfLaborants { get; set; }
 
         public IMouse[] GimmeMice(int count)
         {

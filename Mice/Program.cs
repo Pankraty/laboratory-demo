@@ -15,7 +15,9 @@ namespace Mice
 
             IMedicine poisonedSample = null;
 
-            Parallel.ForEach(mice, mouse =>
+            var options = new ParallelOptions()
+                {MaxDegreeOfParallelism = laboratory.NumberOfLaborants};
+            Parallel.ForEach(mice, options, mouse =>
             {
                 while (poisonedSample == null && samples.TryDequeue(out var sample))
                 {
