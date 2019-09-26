@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Mice
@@ -35,12 +34,11 @@ namespace Mice
         public IMedicine[] GimmeSamples(int count)
         {
             var samples = Enumerable.Range(0, count)
-                .Select(i => new Medicine(i, false))
+                .Select(i => new Medicine(false))
                 .ToArray();
 
             var spoiledIndex = _rnd.Next(count);
-
-            samples[spoiledIndex] = new Medicine(spoiledIndex, true);
+            samples[spoiledIndex] = new Medicine(true);
             return samples;
         }
 
@@ -59,7 +57,7 @@ namespace Mice
             {
                 if (_makeMedicineWork == null)
                     return true;
-
+                
                 _makeMedicineWork.Wait();
                 return _isAlive;
             }
@@ -81,15 +79,12 @@ namespace Mice
 
         private class Medicine : IMedicine
         {
-            public Medicine(int index, bool isPoisoned)
+            public Medicine(bool isPoisoned)
             {
-                Index = index;
                 IsPoisoned = isPoisoned;
             }
 
             public bool IsPoisoned { get; }
-
-            public int Index { get; }
         }
     }
 }

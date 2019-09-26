@@ -4,12 +4,9 @@
     {
         public TestingSession[] Sessions { get; }
 
-        public IMedicine AdditionalSample { get; }
-
-        public TestingSessionSet(TestingSession[] sessions, IMedicine additionalSample)
+        public TestingSessionSet(TestingSession[] sessions)
         {
             Sessions = sessions;
-            AdditionalSample = additionalSample;
         }
     }
 }
