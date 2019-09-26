@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Threading.Tasks;
 
 namespace Mice
 {
@@ -7,22 +9,26 @@ namespace Mice
         static void Main()
         {
             var laboratory = new Laboratory();
-            IMedicine[] samples = laboratory.GimmeSamples(1000);
+            var samples = new ConcurrentQueue<IMedicine>(
+                laboratory.GimmeSamples(1000));
             IMouse[] mice = laboratory.GimmeMice(10);
 
-            var mouse = mice[0];
+            IMedicine poisonedSample = null;
 
-            int i = -1;
-            do
+            Parallel.ForEach(mice, mouse =>
             {
-                i++;
-                if (i >= samples.Length)
-                    throw new InvalidOperationException("Not fair! All samples are clear!");
+                while (poisonedSample == null && samples.TryDequeue(out var sample))
+                {
+                    mouse.GetMedicine(sample);
+                    if (!mouse.IsAlive)
+                    {
+                        poisonedSample = sample;
+                        break;
+                    }
+                }
+            });
 
-                mouse.GetMedicine(samples[i]);
-            } while (mouse.IsAlive);
-
-            Console.WriteLine($"Sample number {i} (starting from zero) is poisoned");
+            Console.WriteLine($"Sample number {poisonedSample.Index} is poisoned");
             Console.ReadKey();
         }
     }
